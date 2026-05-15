@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tapy95Fut — Alberto Mínguez. Creador de contenido futbolero. 1.3M+ seguidores. Entrevistas callejeras, estadios de Segunda División. Colaboraciones con Movistar+ y LALIGA.">
+  <title>Tapy95Fut — Creador de Contenido Futbolero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img, video, svg { display: block; max-width: 100%; }
+
+    :root {
+      --verde-cesped:     #1a472a;
+      --verde-brillante:  #2dff6e;
+      --negro-tribuna:    #0a0a0a;
+      --gris-hormigon:    #1c1c1e;
+      --gris-medio:       #3a3a3c;
+      --blanco-cal:       #f0ede6;
+      --amarillo-tarjeta: #f5c518;
+    }
+
+    body {
+      background: var(--negro-tribuna);
+      color: var(--blanco-cal);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain — fixed pseudo, never on scrolling container */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal[data-d="1"] { transition-delay: 0.08s; }
+    .reveal[data-d="2"] { transition-delay: 0.16s; }
+    .reveal[data-d="3"] { transition-delay: 0.24s; }
+    .reveal[data-d="4"] { transition-delay: 0.32s; }
+    .reveal[data-d="5"] { transition-delay: 0.40s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+    }
+
+    .sep {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(45,255,110,0.22), transparent);
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--verde-brillante);
+      opacity: 0.6;
+      display: block;
+      margin-bottom: 1.1rem;
+    }
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      line-height: 0.95;
+      color: var(--blanco-cal);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      column-gap: 4rem;
+      align-items: center;
+      height: 62px;
+      padding: 0 5vw;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+    }
+    .nav.scrolled {
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: rgba(255,255,255,0.06);
+    }
+
+    /* Grupos izquierdo y derecho */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4rem;
+      list-style: none;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4rem;
+      list-style: none;
+    }
+
+    /* Links compartidos */
+    .nav-left a,
+    .nav-right a:not(.nav-cta) {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blanco-cal);
+      text-decoration: none;
+      opacity: 0.44;
+      position: relative;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-left a::after,
+    .nav-right a:not(.nav-cta)::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--verde-brillante);
+      transform: scaleX(0);
+      transition: transform 0.22s cubic-bezier(0.16,1,0.3,1);
+    }
+    .nav-left a:hover,
+    .nav-right a:not(.nav-cta):hover { opacity: 1; color: var(--verde-brillante); }
+    .nav-left a:hover::after,
+    .nav-right a:not(.nav-cta):hover::after { transform: scaleX(1); }
+
+    /* Logo central — solo cara */
+    .nav-logo {
+      display: block;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo img {
+      height: 48px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(45,255,110,0.12));
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), filter 0.3s ease;
+    }
+    .nav-logo:hover img {
+      transform: translateY(-2px) scale(1.07);
+      filter: drop-shadow(0 4px 14px rgba(45,255,110,0.3));
+    }
+
+    /* CTA */
+    .nav-cta {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: var(--verde-brillante);
+      border: 1px solid rgba(45,255,110,0.4);
+      padding: 0.45rem 1.3rem;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0 rgba(45,255,110,0.07);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .nav-cta:hover { background: var(--verde-brillante); color: var(--negro-tribuna); border-color: var(--verde-brillante); }
+    .nav-cta:active { transform: scale(0.98); }
+
+    .nav-cta-wrap { margin-left: auto; }
+
+    @media (max-width: 768px) {
+      .nav { grid-template-columns: 1fr auto 1fr; column-gap: 0; padding: 0 1.25rem; }
+      .nav-left { display: none; }
+      .nav-right { gap: 0; justify-content: flex-end; }
+      .nav-right li:not(.nav-cta-wrap) { display: none; }
+    }
+
+    /* ── HERO — split: contenido izquierda | imagen 16:9 derecha ── */
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 50fr 50fr;
+      align-items: stretch;
+      overflow: hidden;
+      background: var(--negro-tribuna);
+    }
+
+    /* Fondo ambient: glow verde + field lines */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 55% 60% at 5% 65%, rgba(26,71,42,0.46) 0%, transparent 55%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* Columna izquierda */
+    .hero-left {
+      position: relative;
+      z-index: 1;
+      padding: 8rem 2rem 5rem 6vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      background:
+        linear-gradient(to bottom,
+          rgba(10,10,10,0.72) 0%,
+          transparent 18%,
+          transparent 74%,
+          rgba(10,10,10,0.82) 100%),
+        linear-gradient(to right,
+          rgba(10,10,10,0.45) 0%,
+          transparent 55%);
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--verde-brillante);
+      opacity: 0.58;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--verde-brillante);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(78px, 11vw, 148px);
+      line-height: 0.87;
+      color: var(--blanco-cal);
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tagline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.76rem, 1.1vw, 0.9rem);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--verde-brillante);
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-bottom: 0.55rem;
+    }
+    .hero-tagline .dot { color: var(--gris-medio); font-size: 0.5em; }
+    .hero-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--blanco-cal);
+      opacity: 0.35;
+      letter-spacing: 0.07em;
+      margin-bottom: 2.25rem;
+    }
+
+    /* CTA — directional fill */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.14em;
+      color: var(--verde-brillante);
+      border: 1.5px solid rgba(45,255,110,0.45);
+      padding: 0.8rem 2.1rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+      box-shadow: inset 0 1px 0 rgba(45,255,110,0.07);
+      transition: color 0.25s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--verde-brillante);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.28s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-primary:hover::before { transform: scaleX(1); }
+    .btn-primary:hover { color: var(--negro-tribuna); border-color: var(--verde-brillante); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary > * { position: relative; z-index: 1; }
+
+    /* Columna derecha — full bleed */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      min-height: 100dvh;
+    }
+
+    /* Imagen llena el cuadrado absolutamente */
+    .hero-img-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    /* Línea separadora verde */
+    .hero-img-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: 1.5px;
+      background: linear-gradient(180deg, transparent 5%, rgba(45,255,110,0.35) 25%, rgba(45,255,110,0.35) 75%, transparent 95%);
+      z-index: 10;
+      pointer-events: none;
+    }
+    /* Degradado izquierda sobre las slides */
+    .hero-img-fade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.3) 22%, transparent 42%);
+      z-index: 5;
+      pointer-events: none;
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .hero-slide--active { opacity: 1; }
+
+    /* Stats — izquierda, bajo el CTA */
+    .hero-stats-row {
+      display: flex;
+      align-items: stretch;
+      margin-top: 2.5rem;
+      max-width: 280px;
+    }
+    .hero-stat-item {
+      flex: 1;
+      padding-right: 1.25rem;
+      position: relative;
+    }
+    .hero-stat-item + .hero-stat-item {
+      padding-right: 0;
+      padding-left: 1.25rem;
+    }
+    .hero-stat-item + .hero-stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10%; height: 80%;
+      width: 1px;
+      background: var(--gris-medio);
+    }
+    .hero-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      color: var(--verde-brillante);
+      line-height: 1;
+      display: block;
+    }
+    .hero-stat-lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blanco-cal);
+      opacity: 0.32;
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.25rem;
+      left: 10vw;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .scroll-cue-line {
+      width: 28px;
+      height: 1px;
+      background: var(--verde-brillante);
+      animation: scPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes scPulse {
+      0%,100% { transform: scaleX(1); opacity: 0.6; }
+      50%      { transform: scaleX(0.28); opacity: 0.18; }
+    }
+    .scroll-cue-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.28;
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; align-content: start; align-items: start; }
+      .hero-right { height: 100vw; min-height: unset; order: -1; }
+      .hero-left  {
+        padding: 1.75rem 1.25rem 4rem;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, transparent 14%, transparent 78%, rgba(10,10,10,0.75) 100%);
+      }
+      .hero-title { font-size: clamp(64px, 18vw, 100px); }
+      .hero-stats-row { margin-top: 1.5rem; max-width: 100%; }
+      .scroll-cue { display: none; }
+    }
+
+    /* ── MARQUEE ─────────────────────────────────────── */
+    .marquee-strip {
+      overflow: hidden;
+      background: var(--verde-cesped);
+      padding: 0.7rem 0;
+      border-top: 1px solid rgba(45,255,110,0.12);
+      border-bottom: 1px solid rgba(45,255,110,0.12);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: mScroll 30s linear infinite;
+    }
+    @keyframes mScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-strip:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.76rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blanco-cal);
+      opacity: 0.65;
+      padding: 0 2.25rem;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+    }
+    .marquee-item::after {
+      content: '';
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--verde-brillante);
+      opacity: 0.65;
+    }
+
+    /* ── STATS ───────────────────────────────────────── */
+    .stats {
+      background: var(--gris-hormigon);
+      padding: 3.25rem 5vw;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 1.25rem 0.75rem;
+      position: relative;
+    }
+    .stat-item + .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; height: 60%;
+      width: 1px;
+      background: var(--gris-medio);
+    }
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: var(--verde-brillante);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gris-medio);
+      display: block;
+      margin-top: 0.3rem;
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid .stat-item:nth-child(5) { grid-column: 1/-1; }
+      .stats-grid .stat-item:nth-child(2n+1) + .stat-item::before { display: none; }
+    }
+
+    /* ── ABOUT ───────────────────────────────────────── */
+    .about {
+      padding: 7rem 5vw 7rem 10vw;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 6rem;
+      align-items: start;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .about-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.75rem, 5.5vw, 5rem);
+      line-height: 0.9;
+      color: var(--blanco-cal);
+      margin-bottom: 1.65rem;
+    }
+    .about-body {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--blanco-cal);
+      opacity: 0.72;
+      max-width: 52ch;
+      margin-bottom: 1.1rem;
+    }
+    .timeline {
+      margin-top: 2.25rem;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.4rem; bottom: 0.4rem;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(45,255,110,0.3), transparent);
+    }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 2.4rem 1fr;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -1.1rem; top: 0.42rem;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--verde-brillante);
+      box-shadow: 0 0 0 3px rgba(45,255,110,0.1);
+    }
+    .tl-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--verde-brillante);
+      opacity: 0.75;
+      padding-top: 0.08rem;
+    }
+    .tl-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      color: var(--blanco-cal);
+      opacity: 0.62;
+      line-height: 1.4;
+    }
+    .about-img-frame {
+      position: relative;
+    }
+    .about-img-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -1.1rem; right: -1.1rem;
+      width: 50%; height: 50%;
+      border-right: 1.5px solid rgba(45,255,110,0.3);
+      border-bottom: 1.5px solid rgba(45,255,110,0.3);
+    }
+    @media (max-width: 768px) {
+      .about { grid-template-columns: 1fr; padding: 4rem 1.25rem; gap: 2.5rem; }
+      .about-visual { order: -1; }
+      .about-img-frame::after { display: none; }
+    }
+
+    /* ── CONTENIDO — 3 vídeos TikTok ────────────────── */
+    .videos-section {
+      padding: 8rem 6vw 9rem;
+      background: var(--negro-tribuna);
+    }
+    .videos-header { margin-bottom: 3.5rem; }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .video-frame {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      background: var(--gris-hormigon);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .video-frame iframe,
+    .video-frame video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .video-placeholder-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.9rem;
+      pointer-events: none;
+    }
+    .video-placeholder-inner svg { opacity: 0.18; color: var(--blanco-cal); }
+    .video-placeholder-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--blanco-cal);
+      opacity: 0.22;
+      line-height: 1.6;
+    }
+    .video-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+      letter-spacing: 0.04em;
+      color: var(--blanco-cal);
+      line-height: 1;
+    }
+    .video-card-desc {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--blanco-cal);
+      opacity: 0.42;
+    }
+    @media (max-width: 768px) {
+      .videos-section { padding: 5rem 1.25rem 6rem; }
+      .videos-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* ── ESTADIOS ────────────────────────────────────── */
+    .estadios {
+      padding: 8rem 6vw 9rem;
+      background: var(--negro-tribuna);
+    }
+    .estadios-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 0 2rem;
+      margin-bottom: 3.5rem;
+    }
+    .estadios-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1;
+      color: var(--verde-brillante);
+      opacity: 0.12;
+      letter-spacing: -0.02em;
+      text-align: right;
+      align-self: center;
+    }
+
+    .estadios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      align-items: start;
+    }
+
+    .estadio-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 9 / 16;
+      cursor: pointer;
+      background: var(--gris-hormigon);
+    }
+    .estadio-card--landscape {
+      aspect-ratio: 4 / 3;
+    }
+
+    .estadio-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
+    }
+    .estadio-card:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Overlay: gradiente permanente + info */
+    .estadio-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.1) 45%, transparent 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.2rem 1.3rem;
+      pointer-events: none;
+    }
+    .estadio-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(0.95rem, 1.3vw, 1.25rem);
+      letter-spacing: 0.06em;
+      color: var(--blanco-cal);
+      line-height: 1;
+      display: block;
+      transform: translateY(4px);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .estadio-club {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--verde-brillante);
+      opacity: 0.7;
+      display: block;
+      margin-top: 0.25rem;
+      transform: translateY(4px);
+      transition: transform 0.35s 0.04s cubic-bezier(0.16,1,0.3,1);
+    }
+    .estadio-card:hover .estadio-name,
+    .estadio-card:hover .estadio-club {
+      transform: translateY(0);
+    }
+
+    /* Borde verde izquierdo sutil */
+    .estadio-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--verde-brillante);
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+    .estadio-card:hover::before { opacity: 0.55; }
+
+    @media (max-width: 768px) {
+      .estadios { padding: 5rem 1.25rem 6rem; }
+      .estadios-header { grid-template-columns: 1fr; }
+      .estadios-count { display: none; }
+      .estadios-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+      .estadio-card--wide { grid-column: span 2; }
+    }
+
+    /* ── PLATFORMS ───────────────────────────────────── */
+    .platforms { padding: 5.5rem 5vw; max-width: 1400px; margin: 0 auto; }
+    .platforms-header { margin-bottom: 2.75rem; }
+    .platforms-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .platform-card {
+      background: var(--gris-hormigon);
+      border: 1px solid var(--gris-medio);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.25s ease;
+    }
+    .platform-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(45,255,110,0);
+      pointer-events: none;
+      transition: border-color 0.25s ease;
+    }
+    .platform-card:hover { border-color: rgba(45,255,110,0.3); }
+    .platform-card:hover::after { border-color: rgba(45,255,110,0.07); }
+    .platform-icon { display: flex; justify-content: center; margin-bottom: 1rem; opacity: 0.65; transition: opacity 0.2s; }
+    .platform-card:hover .platform-icon { opacity: 1; }
+    .platform-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; color: var(--blanco-cal); display: block; margin-bottom: 0.2rem; }
+    .platform-handle { font-family: 'DM Mono', monospace; font-size: 0.63rem; color: var(--verde-brillante); opacity: 0.58; display: block; margin-bottom: 0.9rem; }
+    .platform-count { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--verde-brillante); display: block; line-height: 1; }
+    .platform-count-label { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris-medio); display: block; margin-top: 0.2rem; }
+    @media (max-width: 640px) {
+      .platforms { padding: 4rem 0; }
+      .platforms-header { padding: 0 1.25rem; }
+      .platforms-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 1.25rem 1rem;
+        gap: 1rem;
+      }
+      .platform-card { min-width: 210px; flex: 0 0 auto; scroll-snap-align: start; }
+    }
+    @media (min-width: 641px) and (max-width: 900px) {
+      .platforms-row { grid-template-columns: 1fr 1fr; }
+      .platforms-row .platform-card:nth-child(3) { grid-column: 1/-1; }
+    }
+
+    /* ── COLLABORATIONS ──────────────────────────────── */
+    .collabs {
+      padding: 5rem 5vw;
+      background: #0d1810;
+      position: relative;
+      overflow: hidden;
+    }
+    .collabs::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(26,71,42,0.38) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .collabs-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+    .collabs-header { text-align: center; margin-bottom: 3.25rem; }
+    .collabs-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .collab-item {
+      padding: 0.9rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.28rem;
+      position: relative;
+      opacity: 0.42;
+      transition: opacity 0.25s ease;
+      cursor: default;
+    }
+    .collab-item:hover { opacity: 1; }
+    .collab-item:not(:last-child)::after {
+      content: '/';
+      position: absolute;
+      right: -0.2rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--verde-brillante);
+      opacity: 0.2;
+    }
+    .collab-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem; color: var(--blanco-cal); letter-spacing: 0.04em; }
+    .collab-role { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--verde-brillante); }
+    .collab-logo { height: 30px; width: auto; max-width: 110px; object-fit: contain; display: block; }
+    .collab-logo--white { filter: brightness(0) invert(1); }
+    @media (max-width: 640px) {
+      .collabs { padding: 4rem 1.25rem; }
+      .collab-item { padding: 0.7rem 1.1rem; }
+    }
+
+    /* ── PROJECTS — fichas de partido ────────────────── */
+    .projects { padding: 6rem 5vw; max-width: 1400px; margin: 0 auto; }
+    .projects-header { margin-bottom: 2.75rem; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 0.9fr;
+      gap: 1.25rem;
+    }
+    .project-card {
+      border: 1px solid var(--gris-medio);
+      padding: 1.85rem;
+      position: relative;
+      transition: border-color 0.25s ease, transform 0.28s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--verde-brillante), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover { border-color: rgba(45,255,110,0.22); transform: translateY(-3px); }
+    .project-num { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--verde-brillante); letter-spacing: 0.14em; opacity: 0.65; margin-bottom: 1.4rem; display: block; }
+    .project-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.65rem; color: var(--blanco-cal); letter-spacing: 0.02em; margin-bottom: 0.6rem; }
+    .project-desc { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; line-height: 1.55; color: var(--blanco-cal); opacity: 0.55; margin-bottom: 1.85rem; }
+    .project-bar { height: 1.5px; width: 100%; background: var(--gris-medio); position: relative; overflow: hidden; margin-bottom: 0.6rem; }
+    .project-bar-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--verde-brillante); width: var(--w, 100%); }
+    .project-tag { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amarillo-tarjeta); opacity: 0.72; display: block; }
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid .project-card:last-child { grid-column: 1/-1; }
+    }
+    @media (max-width: 560px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .projects-grid .project-card:last-child { grid-column: auto; }
+      .projects { padding: 4rem 1.25rem; }
+    }
+
+    /* ── VIRAL MOMENT ────────────────────────────────── */
+    .viral {
+      background: var(--gris-hormigon);
+      padding: 6rem 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .viral::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      width: 4px;
+      background: var(--amarillo-tarjeta);
+    }
+    .viral-inner { max-width: 960px; margin: 0 auto; padding-left: 2.25rem; }
+    .viral-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amarillo-tarjeta);
+      opacity: 0.78;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .viral-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 14px; height: 1.5px;
+      background: var(--amarillo-tarjeta);
+      opacity: 0.55;
+    }
+    .viral-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.1rem, 5.5vw, 4.75rem);
+      line-height: 0.94;
+      color: var(--blanco-cal);
+      margin-bottom: 1.4rem;
+      max-width: 20ch;
+    }
+    .viral-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.13em;
+      color: var(--verde-brillante);
+      opacity: 0.72;
+      margin-bottom: 1.85rem;
+      display: block;
+    }
+    .viral-quote {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      color: var(--blanco-cal);
+      opacity: 0.62;
+      max-width: 56ch;
+      margin-bottom: 2.5rem;
+    }
+    .viral-media-slot { width: 100%; aspect-ratio: 16/9; border: 1px solid var(--gris-medio); background: rgba(0,0,0,0.3); }
+    @media (max-width: 640px) {
+      .viral { padding: 4rem 1.25rem 4rem 1.65rem; }
+      .viral::before { width: 3px; }
+      .viral-inner { padding-left: 1.1rem; }
+    }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    .contact {
+      padding: 8rem 5vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 75vmin; height: 75vmin;
+      border-radius: 50%;
+      border: 1px solid rgba(45,255,110,0.035);
+      pointer-events: none;
+    }
+    .contact::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 48vmin; height: 48vmin;
+      border-radius: 50%;
+      border: 1px solid rgba(45,255,110,0.025);
+      pointer-events: none;
+    }
+    .contact-inner { position: relative; z-index: 1; }
+    .contact-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6.5vw, 6rem);
+      line-height: 0.94;
+      color: var(--blanco-cal);
+      margin-bottom: 1.2rem;
+      animation: flicker 7s step-end infinite;
+    }
+    @keyframes flicker {
+      0%,92%,100% { opacity: 1; }
+      93%          { opacity: 0.97; }
+      94%          { opacity: 1; }
+      96%          { opacity: 0.93; }
+      96.5%        { opacity: 1; }
+    }
+    .contact-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blanco-cal);
+      opacity: 0.38;
+      margin-bottom: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .contact-sub .d { color: var(--verde-brillante); opacity: 0.45; font-size: 0.5em; }
+    .contact-email {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(0.82rem, 1.8vw, 1.2rem);
+      color: var(--verde-brillante);
+      text-decoration: none;
+      margin-bottom: 2.25rem;
+      letter-spacing: 0.02em;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100% { text-shadow: 0 0 8px rgba(45,255,110,0.22); }
+      50%      { text-shadow: 0 0 22px rgba(45,255,110,0.58); }
+    }
+    .contact-email:hover { text-decoration: underline; text-decoration-color: rgba(45,255,110,0.38); }
+    .btn-secondary {
+      display: block;
+      width: max-content;
+      margin: 0 auto 3.25rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.92rem;
+      letter-spacing: 0.12em;
+      color: var(--blanco-cal);
+      border: 1px solid var(--gris-medio);
+      padding: 0.65rem 1.85rem;
+      text-decoration: none;
+      opacity: 0.52;
+      transition: opacity 0.2s, border-color 0.2s;
+    }
+    .btn-secondary:hover { opacity: 1; border-color: var(--blanco-cal); }
+    .btn-secondary:active { transform: scale(0.98); }
+    .contact-rrss { display: flex; align-items: center; justify-content: center; gap: 1.75rem; }
+    .rrss-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blanco-cal);
+      opacity: 0.32;
+      text-decoration: none;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .rrss-link:hover { opacity: 1; color: var(--verde-brillante); }
+    @media (max-width: 640px) { .contact { padding: 5rem 1.25rem; } }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      padding: 1.65rem 5vw;
+      border-top: 1px solid var(--gris-hormigon);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--blanco-cal); opacity: 0.28; letter-spacing: 0.04em; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blanco-cal); opacity: 0.18; }
+    .footer-agency { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--verde-brillante); opacity: 0.32; }
+    @media (max-width: 640px) { footer { flex-direction: column; align-items: center; text-align: center; padding: 1.65rem 1.25rem; } }
+
+    /* ── PLACEHOLDER ─────────────────────────────────── */
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      background:
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.012) 0, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 22px),
+        var(--gris-hormigon);
+      border: 1px solid var(--gris-medio);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .placeholder svg { opacity: 0.16; color: var(--blanco-cal); }
+    .placeholder-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      opacity: 0.22;
+      color: var(--blanco-cal);
+      max-width: 30ch;
+      line-height: 1.55;
+    }
+    /* ── MOBILE GLOBAL FIXES (<768px) ───────────────── */
+    @media (max-width: 768px) {
+
+      /* Stats: 2 cols, fuente más pequeña */
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
+      .stat-number { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+      .stat-label  { font-size: 0.52rem; }
+
+      /* About: padding simétrico, imagen encima */
+      .about { padding: 3.5rem 1.25rem 4rem; gap: 2rem; grid-template-columns: 1fr; }
+      .about-visual { order: -1; }
+      .about-headline { font-size: clamp(2rem, 9vw, 3.2rem); }
+      .about-body { font-size: 1rem; }
+
+      /* Videos: 1 col, título más pequeño */
+      .videos-section { padding: 4rem 1.25rem 5rem; }
+      .videos-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .video-card-title { font-size: 1.3rem; }
+
+      /* Estadios: 2 cols compactas */
+      .estadios { padding: 4rem 1.25rem 5rem; }
+      .estadios-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .estadio-name { font-size: 0.85rem; }
+
+      /* Plataformas: 1 col */
+      .platforms { padding: 4rem 1.25rem; }
+      .platforms-row { grid-template-columns: 1fr; gap: 0.75rem; }
+
+      /* Collabs: padding reducido, logos centrados */
+      .collabs { padding: 3.5rem 1.25rem; }
+      .collabs-row { gap: 0; }
+      .collab-item { padding: 0.75rem 1rem; }
+
+      /* Contact */
+      .contact { padding: 4rem 1.25rem 5rem; }
+      .contact-headline { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+      .contact-email { font-size: 0.78rem; }
+
+      /* Separadores */
+      .sep { display: none; }
+
+      /* Section labels y headings */
+      .section-heading { font-size: clamp(2rem, 8vw, 2.8rem); }
+    }
+
+    /* Extra pequeño <480px */
+    @media (max-width: 480px) {
+      .estadios-grid { grid-template-columns: 1fr; }
+      .videos-grid { gap: 2rem; }
+      .platforms-row { gap: 0.5rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Navegación principal">
+  <ul class="nav-left">
+    <li><a href="#sobre">Qui&eacute;n es</a></li>
+    <li><a href="#contenido">Contenido</a></li>
+  </ul>
+  <a href="#" class="nav-logo" aria-label="Tapy95Fut inicio">
+    <img src="face.png" alt="Tapy95Fut">
+  </a>
+  <ul class="nav-right">
+    <li><a href="#estadios">Estadios</a></li>
+    <li><a href="#plataformas">Plataformas</a></li>
+    <li class="nav-cta-wrap"><a href="#contacto" class="nav-cta">Colabora</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO — split ══════════════════════════════════ -->
+<section class="hero" aria-label="Tapy95Fut, creador de contenido futbolero">
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- Izquierda: texto -->
+  <div class="hero-left">
+    <p class="hero-eyebrow reveal">Albacete, Espa&ntilde;a &mdash; Creador de Contenido Futbolero</p>
+    <h1 class="hero-title reveal" data-d="1">TAPY<br>95FUT</h1>
+    <p class="hero-tagline reveal" data-d="2" aria-label="Entrevistas, Estadios, Segunda División">
+      Entrevistas <span class="dot" aria-hidden="true">&middot;</span>
+      Estadios <span class="dot" aria-hidden="true">&middot;</span>
+      Segunda Div.
+    </p>
+    <p class="hero-sub reveal" data-d="2">Gestionado por MTS 23Talent &nbsp;&middot;&nbsp; Movistar+ &amp; LALIGA</p>
+    <a href="#contacto" class="btn-primary btn-magnetic reveal" data-d="3" aria-label="Colaborar con Tapy95Fut">
+      <span>Colabora Conmigo</span>
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+        <path d="M3 7.5h9M8 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <div class="hero-stats-row reveal" data-d="4">
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">1.3M+</span>
+        <span class="hero-stat-lbl">Seguidores</span>
+      </div>
+      <div class="hero-stat-item">
+        <span class="hero-stat-num">57M+</span>
+        <span class="hero-stat-lbl">Visualizaciones</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Derecha: imagen 1:1 full height -->
+  <div class="hero-right">
+    <div class="hero-img-wrap reveal" data-d="1">
+      <img class="hero-slide hero-slide--active" src="herotapy (2).jpg" alt="Alberto M&iacute;nguez, Tapy95Fut, con micr&oacute;fono" style="object-position:center 15%">
+      <div class="hero-img-fade" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue reveal" data-d="5" aria-hidden="true">
+    <div class="scroll-cue-line"></div>
+    <span class="scroll-cue-label">Scroll</span>
+  </div>
+</section>
+
+
+<!-- ═══ STATS ═══════════════════════════════════════════ -->
+<section class="stats" aria-label="Cifras de audiencia">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <span class="stat-number" data-target="1.3" data-decimals="1" data-suffix="M+" aria-label="1.3 millones más de seguidores totales">0</span>
+      <span class="stat-label">Seguidores totales</span>
+    </div>
+    <div class="stat-item reveal" data-d="1">
+      <span class="stat-number" data-target="57" data-decimals="0" data-suffix="M+" aria-label="57 millones más de visualizaciones YouTube">0</span>
+      <span class="stat-label">Visualizaciones YouTube</span>
+    </div>
+    <div class="stat-item reveal" data-d="2">
+      <span class="stat-number" data-target="16.2" data-decimals="1" data-suffix="M" aria-label="16.2 millones de likes en TikTok">0</span>
+      <span class="stat-label">Likes en TikTok</span>
+    </div>
+    <div class="stat-item reveal" data-d="3">
+      <span class="stat-number" data-target="800" data-decimals="0" data-suffix="K+" aria-label="800 mil más reproducciones en el vídeo viral">0</span>
+      <span class="stat-label">V&iacute;deo viral m&aacute;s visto</span>
+    </div>
+    <div class="stat-item reveal" data-d="4">
+      <span class="stat-number" data-target="3" data-decimals="0" data-suffix="" aria-label="3 años de trayectoria">0</span>
+      <span class="stat-label">A&ntilde;os de trayectoria</span>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ ABOUT ══════════════════════════════════════════ -->
+<section class="about" id="sobre" aria-label="Quién es Alberto Mínguez Tapy95Fut">
+  <div class="about-text">
+    <span class="section-label reveal">01 / Qui&eacute;n es Tapy</span>
+    <h2 class="about-headline reveal" data-d="1">DE CARNICERO<br>A CREADOR</h2>
+    <p class="about-body reveal" data-d="2">Alberto M&iacute;nguez, nacido en 1995 en Albacete. Dej&oacute; el mostrador en 2022 para poner un micr&oacute;fono en la calle. Hoy es imagen oficial del Roadshow Estadio Movistar LALIGA junto a Iker Casillas.</p>
+    <p class="about-body reveal" data-d="2">Su f&oacute;rmula: no entrevistar a Vin&iacute;cius. Entrevistar al aficionado que lleva 30 a&ntilde;os yendo al estadio. Eso es lo que nadie m&aacute;s hace.</p>
+  </div>
+  <div class="about-visual">
+    <div class="about-img-frame reveal" data-d="1">
+      <img src="tapyinicios.jpg" alt="Alberto M&iacute;nguez, Tapy95Fut, en sus inicios" style="width:100%;height:auto;display:block;">
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ CONTENIDO — VÍDEOS ══════════════════════════════ -->
+<section class="videos-section" id="contenido" aria-label="Contenido de Tapy95Fut">
+  <div class="videos-header">
+    <span class="section-label reveal">02 / Contenido</span>
+    <h2 class="section-heading reveal" data-d="1">LO QUE VES<br>EN SUS CANALES</h2>
+  </div>
+  <div class="videos-grid">
+
+    <!-- Vídeo 1 — Momentos Históricos -->
+    <div class="video-card reveal" data-d="1">
+      <div class="video-frame">
+        <video src="momentos.mp4" controls preload="metadata" playsinline></video>
+      </div>
+      <h3 class="video-card-title">Momentos Hist&oacute;ricos</h3>
+      <p class="video-card-desc">Los instantes que hacen historia en los estadios de la Segunda Divisi&oacute;n.</p>
+    </div>
+
+    <!-- Vídeo 2 — Miniconcursos y Entrevistas -->
+    <div class="video-card reveal" data-d="2">
+      <div class="video-frame">
+        <video src="entrevista.mp4" controls preload="metadata" playsinline></video>
+      </div>
+      <h3 class="video-card-title">Miniconcursos y Entrevistas</h3>
+      <p class="video-card-desc">Retos, trivials y conversaciones con los aficionados de a pie en las puertas del estadio.</p>
+    </div>
+
+    <!-- Vídeo 3 — Visitas a Estadios -->
+    <div class="video-card reveal" data-d="3">
+      <div class="video-frame">
+        <video src="estadio.mp4" controls preload="metadata" playsinline></video>
+      </div>
+      <h3 class="video-card-title">Visitas a Estadios</h3>
+      <p class="video-card-desc">Anduva, Carlos Belmonte, El Molinón. Los estadios de Segunda tienen historia y Tapy la cuenta.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ ESTADIOS ════════════════════════════════════════ -->
+<section class="estadios" id="estadios" aria-label="Estadios visitados por Tapy95Fut">
+  <div class="estadios-header">
+    <div>
+      <span class="section-label reveal">Sobre el Terreno</span>
+      <h2 class="section-heading reveal" data-d="1">Estadios</h2>
+    </div>
+    <span class="estadios-count reveal" data-d="1" aria-hidden="true">9</span>
+  </div>
+
+  <div class="estadios-grid">
+
+    <!-- Fila 1 -->
+    <article class="estadio-card reveal" data-d="1">
+      <img src="tapywanda.jpg" alt="Wanda Metropolitano, Atl&eacute;tico de Madrid" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Wanda Metropolitano</span>
+        <span class="estadio-club">Atl&eacute;tico de Madrid</span>
+      </div>
+    </article>
+    <article class="estadio-card reveal" data-d="2">
+      <img src="tapymolinon.jpg" alt="El Molin&oacute;n, Sporting de Gij&oacute;n" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">El Molin&oacute;n</span>
+        <span class="estadio-club">Sporting de Gij&oacute;n</span>
+      </div>
+    </article>
+    <article class="estadio-card reveal" data-d="3">
+      <img src="tapycarmenes.jpg" alt="Los C&aacute;rmenes, Granada CF" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Los C&aacute;rmenes</span>
+        <span class="estadio-club">Granada CF</span>
+      </div>
+    </article>
+
+    <!-- Fila 2 -->
+    <article class="estadio-card reveal" data-d="1">
+      <img src="tapyalcoraz.jpg" alt="El Alcoraz, SD Huesca" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">El Alcoraz</span>
+        <span class="estadio-club">SD Huesca</span>
+      </div>
+    </article>
+    <article class="estadio-card reveal" data-d="2">
+      <img src="tapycadiz.jpg" alt="Estadio Carranza, C&aacute;diz CF" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Estadio Carranza</span>
+        <span class="estadio-club">C&aacute;diz CF</span>
+      </div>
+    </article>
+    <article class="estadio-card reveal" data-d="3">
+      <img src="tapylevante.jpg" alt="Estadio Ciutat de Val&egrave;ncia, Levante UD" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Ciutat de Val&egrave;ncia</span>
+        <span class="estadio-club">Levante UD</span>
+      </div>
+    </article>
+
+    <!-- Fila 3 -->
+    <article class="estadio-card reveal" data-d="1">
+      <img src="tapymirandes.jpg" alt="Estadio Municipal de Anduva, CD Mira&ntilde;d&eacute;s" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Anduva</span>
+        <span class="estadio-club">CD Mira&ntilde;d&eacute;s</span>
+      </div>
+    </article>
+    <article class="estadio-card reveal" data-d="2">
+      <img src="tapyvillarreal.jpg" alt="Estadio de la Cer&aacute;mica, Villarreal CF" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Estadio de la Cer&aacute;mica</span>
+        <span class="estadio-club">Villarreal CF</span>
+      </div>
+    </article>
+    <article class="estadio-card estadio-card--landscape reveal" data-d="3">
+      <img src="tapyelda.jpg" alt="Estadio Nuevo Pepico Amat, Eldense CF" loading="lazy">
+      <div class="estadio-overlay">
+        <span class="estadio-name">Nuevo Pepico Amat</span>
+        <span class="estadio-club">Eldense CF</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ PLATFORMS ══════════════════════════════════════ -->
+<section class="platforms" id="plataformas" aria-label="Redes sociales de Tapy95Fut">
+  <div class="platforms-header">
+    <span class="section-label reveal">03 / Plataformas</span>
+    <h2 class="section-heading reveal" data-d="1">Encu&eacute;ntrale Aqu&iacute;</h2>
+  </div>
+  <div class="platforms-row">
+    <div class="platform-card reveal">
+      <div class="platform-icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+          <path d="M21.3 4c.5 2.5 2 4.5 4.7 5.5v4c-1.6 0-3.1-.5-4.7-1.5V20c0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8c.5 0 1 .06 1.5.16V17a4 4 0 1 0 2.5 3.7V4h4z" fill="var(--blanco-cal)" opacity="0.7"/>
+        </svg>
+      </div>
+      <span class="platform-name">TikTok</span>
+      <span class="platform-handle">@tapy95.futbol</span>
+      <span class="platform-count" data-target="812" data-decimals="0" data-suffix="K" aria-label="812 mil seguidores en TikTok">0</span>
+      <span class="platform-count-label">seguidores</span>
+    </div>
+    <div class="platform-card reveal" data-d="1">
+      <div class="platform-icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+          <path d="M28.5 9.5s-.3-2-.9-2.8c-.9-1-1.8-1-2.3-1.1C22.1 5.4 16 5.4 16 5.4s-6.1 0-9.3.3c-.5.1-1.4.1-2.3 1.1-.6.8-.9 2.8-.9 2.8S3 11.8 3 14.1v2c0 2.3.3 4.5.3 4.5s.3 2 .9 2.8c.9 1 2 1 2.5 1C8.7 24.6 16 24.6 16 24.6s6.1 0 9.3-.3c.5-.1 1.4-.1 2.3-1.1.6-.8.9-2.8.9-2.8s.3-2.2.3-4.5v-2c0-2.3-.3-4.5-.3-4.5z" fill="var(--blanco-cal)" opacity="0.7"/>
+          <polygon points="13,10.5 13,21 21.5,15.8" fill="var(--negro-tribuna)"/>
+        </svg>
+      </div>
+      <span class="platform-name">YouTube</span>
+      <span class="platform-handle">@tapy95fut</span>
+      <span class="platform-count" data-target="296" data-decimals="0" data-suffix="K" aria-label="296 mil suscriptores en YouTube">0</span>
+      <span class="platform-count-label">suscriptores</span>
+    </div>
+    <div class="platform-card reveal" data-d="2">
+      <div class="platform-icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="var(--blanco-cal)" stroke-width="1.5" opacity="0.7">
+          <rect x="4" y="4" width="24" height="24" rx="7"/>
+          <circle cx="16" cy="16" r="5.5"/>
+          <circle cx="23.2" cy="8.8" r="1.3" fill="var(--blanco-cal)" stroke="none"/>
+        </svg>
+      </div>
+      <span class="platform-name">Instagram</span>
+      <span class="platform-handle">@tapy95fut</span>
+      <span class="platform-count" data-target="225" data-decimals="0" data-suffix="K" aria-label="225 mil seguidores en Instagram">0</span>
+      <span class="platform-count-label">seguidores</span>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ COLLABORATIONS ═════════════════════════════════ -->
+<section class="collabs" aria-label="Marcas y entidades colaboradoras con Tapy95Fut">
+  <div class="collabs-inner">
+    <div class="collabs-header">
+      <span class="section-label reveal" style="justify-content:center;display:flex;">04 / Colaboraciones</span>
+      <h2 class="section-heading reveal" data-d="1" style="text-align:center;">Ya Conf&iacute;an en Tapy</h2>
+    </div>
+    <div class="collabs-row reveal" data-d="2">
+      <div class="collab-item">
+        <img src="movistar.png" alt="Movistar+" class="collab-logo collab-logo--white">
+        <span class="collab-role">Roadshow LALIGA Oficial</span>
+      </div>
+      <div class="collab-item">
+        <img src="laliga.png" alt="LALIGA" class="collab-logo">
+        <span class="collab-role">Activaci&oacute;n Oficial</span>
+      </div>
+      <div class="collab-item">
+        <img src="albacetepng.png" alt="Albacete BP" class="collab-logo">
+        <span class="collab-role">Contenido Recurrente</span>
+      </div>
+      <div class="collab-item">
+        <span class="collab-name">Kia Albacete</span>
+        <span class="collab-role">Sponsor &mdash; Dando un Voltio</span>
+      </div>
+      <div class="collab-item">
+        <span class="collab-name">C&aacute;diz CF</span>
+        <span class="collab-role">Partido Oficial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+
+<!-- ═══ CONTACT ════════════════════════════════════════ -->
+<section class="contact" id="contacto" aria-label="Contacto y colaboraciones">
+  <div class="contact-inner">
+    <h2 class="contact-headline reveal">&iquest;Quieres Trabajar<br>Con Tapy?</h2>
+    <p class="contact-sub reveal" data-d="1">
+      Activaciones de marca <span class="d" aria-hidden="true">&middot;</span>
+      Sponsorships <span class="d" aria-hidden="true">&middot;</span>
+      Apariciones <span class="d" aria-hidden="true">&middot;</span>
+      Colaboraciones
+    </p>
+    <a href="mailto:tapy95fut@mts23talent.com" class="contact-email reveal" data-d="2" aria-label="Enviar email a tapy95fut@mts23talent.com">
+      tapy95fut@mts23talent.com
+    </a>
+    <a href="#" class="btn-secondary reveal" data-d="3" aria-label="Descargar Media Kit">Ver Media Kit</a>
+    <div class="contact-rrss reveal" data-d="4">
+      <a href="https://www.tiktok.com/@tapy95.futbol" class="rrss-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok @tapy95.futbol">TikTok</a>
+      <span aria-hidden="true" style="font-family:'DM Mono',monospace;font-size:0.45rem;opacity:0.18;color:var(--verde-brillante)">&middot;</span>
+      <a href="https://www.youtube.com/@tapy95fut" class="rrss-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube @tapy95fut">YouTube</a>
+      <span aria-hidden="true" style="font-family:'DM Mono',monospace;font-size:0.45rem;opacity:0.18;color:var(--verde-brillante)">&middot;</span>
+      <a href="https://www.instagram.com/tapy95fut" class="rrss-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram @tapy95fut">Instagram</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════ -->
+<footer>
+  <span class="footer-logo">Tapy95Fut</span>
+  <span class="footer-copy">&copy; 2025 Alberto M&iacute;nguez</span>
+  <span class="footer-agency">Gestionado por MTS 23Talent</span>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     JS — vanilla only
+═══════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ── Scroll reveal ─────────────────────────────────── */
+(function () {
+  var els = document.querySelectorAll('.reveal');
+
+  // Hero: visible immediately
+  document.querySelectorAll('.hero .reveal').forEach(function (el) {
+    el.classList.add('in');
+  });
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -28px 0px' });
+
+  els.forEach(function (el) {
+    if (!el.classList.contains('in')) obs.observe(el);
+  });
+}());
+
+/* ── Animated counters ─────────────────────────────── */
+(function () {
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function run(el) {
+    var target   = parseFloat(el.dataset.target);
+    var decimals = parseInt(el.dataset.decimals || '0', 10);
+    var suffix   = el.dataset.suffix || '';
+    var dur      = 1500;
+    var t0       = performance.now();
+
+    function tick(now) {
+      var prog  = Math.min((now - t0) / dur, 1);
+      var val   = easeOut(prog) * target;
+      el.textContent = val.toFixed(decimals) + suffix;
+      if (prog < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals) + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  var cObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        run(entry.target);
+        cObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll('[data-target]').forEach(function (el) {
+    cObs.observe(el);
+  });
+}());
+
+/* ── Vídeos — exclusividad: pausa los demás al reproducir ── */
+(function () {
+  var videos = Array.from(document.querySelectorAll('.video-frame video'));
+  videos.forEach(function (vid) {
+    vid.addEventListener('play', function () {
+      videos.forEach(function (other) {
+        if (other !== vid) {
+          other.pause();
+        }
+      });
+    });
+  });
+}());
+
+/* ── Hero slideshow crossfade ───────────────────────── */
+(function () {
+  var slides = document.querySelectorAll('.hero-slide');
+  if (slides.length < 2) return;
+  var idx = 0;
+  setInterval(function () {
+    slides[idx].classList.remove('hero-slide--active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('hero-slide--active');
+  }, 5000);
+}());
+
+/* ── Nav blur on scroll ────────────────────────────── */
+(function () {
+  var nav = document.querySelector('.nav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+}());
+
+/* ── Magnetic CTA — MOTION_INTENSITY 6 ────────────── */
+(function () {
+  var STRENGTH = 0.17;
+
+  document.querySelectorAll('.btn-magnetic').forEach(function (btn) {
+    var on = false;
+
+    btn.addEventListener('mouseenter', function () { on = true; });
+
+    btn.addEventListener('mousemove', function (e) {
+      if (!on) return;
+      var r  = btn.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width  / 2)) * STRENGTH;
+      var dy = (e.clientY - (r.top  + r.height / 2)) * STRENGTH;
+      btn.style.transform  = 'translate(' + dx + 'px,' + dy + 'px)';
+      btn.style.transition = 'transform 0.12s ease';
+    });
+
+    btn.addEventListener('mouseleave', function () {
+      on = false;
+      btn.style.transform  = 'translate(0,0)';
+      btn.style.transition = 'transform 0.45s cubic-bezier(0.16,1,0.3,1)';
+    });
+  });
+}());
+
+/* ── Spotlight border cards ────────────────────────── */
+(function () {
+  document.querySelectorAll('.pillar-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%');
+    });
+  });
+}());
+</script>
+</body>
+</html>
