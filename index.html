@@ -443,62 +443,64 @@
     }
 
     @media (max-width: 768px) {
-      /* Hero: grid 2 filas — texto (auto) | imagen (1fr rellena el resto) */
+      /* ── Magazine cover: foto full-bleed, texto flotando encima ── */
       .hero {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+        display: block;
+        position: relative;
         min-height: 100dvh;
         overflow: hidden;
       }
-      .hero-bg        { display: none; }
+      .hero-bg          { display: none; }
       .hero-mobile-logo { display: none; }
+      .scroll-cue       { display: none; }
 
-      /* Texto arriba — fondo sólido para legibilidad */
-      .hero-left {
-        order: 1;
-        grid-row: 1;
-        padding: 5.25rem 1.5rem 1.75rem;
-        justify-content: flex-start;
-        background: var(--negro-tribuna);
-        position: relative;
-        z-index: 1;
-      }
-      /* Línea separadora verde entre texto e imagen */
-      .hero-left::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 1px;
-        background: linear-gradient(90deg,
-          transparent 0%, rgba(45,255,110,0.4) 30%,
-          rgba(45,255,110,0.4) 70%, transparent 100%);
-      }
-
-      /* Imagen abajo — rellena todo lo que queda */
+      /* Imagen: ocupa TODO el hero como fondo */
       .hero-right {
-        order: 2;
-        grid-row: 2;
-        position: relative;
+        position: absolute;
+        inset: 0;
         min-height: unset;
+        z-index: 0;
       }
-      /* Gradiente imagen: oscurece el top para fundir con la zona de texto */
+      .hero-img-wrap::before { display: none; }
+      /* Gradiente: oscuro arriba y abajo, imagen visible en el centro */
       .hero-img-fade {
-        background: linear-gradient(to bottom,
-          rgba(10,10,10,0.5) 0%, transparent 18%,
-          transparent 65%, rgba(10,10,10,0.25) 100%);
+        background: linear-gradient(180deg,
+          rgba(10,10,10,0.88) 0%,
+          rgba(10,10,10,0.45) 22%,
+          rgba(10,10,10,0.05) 48%,
+          rgba(10,10,10,0.55) 72%,
+          rgba(10,10,10,0.92) 100%);
       }
-      .hero-img-wrap::before { display: none; } /* quita línea lateral en móvil */
 
-      /* Tipografía ajustada */
-      .hero-title      { font-size: clamp(56px, 15vw, 86px); margin-bottom: 0.75rem; }
-      .hero-eyebrow    { margin-bottom: 0.75rem; }
-      .hero-tagline    { font-size: 0.7rem; margin-bottom: 0.3rem; }
-      .hero-sub        { font-size: 0.58rem; margin-bottom: 1.25rem; }
-      .btn-primary     { padding: 0.7rem 1.6rem; font-size: 0.88rem; }
-      .hero-stats-row  { margin-top: 1.25rem; max-width: 100%; }
-      .hero-stat-num   { font-size: clamp(1.3rem, 4.5vw, 1.7rem); }
-      .scroll-cue      { display: none; }
+      /* Texto: capa encima, ocupa el mismo 100dvh */
+      .hero-left {
+        position: relative;
+        z-index: 2;
+        min-height: 100dvh;
+        padding: 5.5rem 1.5rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: none;
+        align-items: flex-start;
+      }
+      /* Empuja sub + CTA + stats al fondo */
+      .hero-tagline { margin-bottom: auto; padding-bottom: 2.5rem; }
+
+      /* Tipografía */
+      .hero-title    { font-size: clamp(60px, 16vw, 90px); margin-bottom: 0.6rem; }
+      .hero-eyebrow  { margin-bottom: 1rem; }
+      .hero-tagline  { font-size: 0.72rem; }
+      .hero-sub      { font-size: 0.58rem; margin-bottom: 1.4rem; opacity: 0.32; }
+      .btn-primary   { padding: 0.8rem 1.8rem; font-size: 0.9rem; align-self: flex-start; }
+      .hero-stats-row {
+        margin-top: 1.4rem;
+        max-width: 100%;
+        padding-top: 1.1rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        width: 100%;
+      }
+      .hero-stat-num { font-size: clamp(1.4rem, 4.8vw, 1.8rem); }
     }
 
     /* ── MARQUEE ─────────────────────────────────────── */
