@@ -186,9 +186,10 @@
     .nav-cta:active { transform: scale(0.98); }
 
     .nav-cta-wrap { margin-left: auto; }
+    .nav-hamburger { display: none; } /* mostrado solo en móvil */
 
     @media (max-width: 768px) {
-      .nav { display: flex; justify-content: center; padding: 0 1.25rem; }
+      .nav { display: flex; justify-content: center; padding: 0 1.25rem; position: relative; }
       .nav-left, .nav-right { display: none; }
       .nav-hamburger { display: flex; }
     }
@@ -442,21 +443,53 @@
     }
 
     @media (max-width: 768px) {
+      /* Hero: flex column — texto | logo | foto */
       .hero {
-        grid-template-columns: 1fr;
-        align-content: start; align-items: stretch;
+        display: flex;
+        flex-direction: column;
         min-height: 100dvh;
+        overflow: hidden;
       }
+      .hero-bg { display: none; }
+
+      /* 1 — Texto arriba */
       .hero-left {
         order: 1;
-        padding: 5.5rem 1.25rem 1.5rem;
-        flex-direction: column; justify-content: flex-start;
-        background: linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, transparent 16%, transparent 80%, rgba(10,10,10,0.7) 100%);
+        flex: 0 0 auto;
+        padding: 5.5rem 1.5rem 1.75rem;
+        justify-content: flex-start;
+        background: linear-gradient(to bottom,
+          rgba(10,10,10,0.6) 0%,
+          transparent 18%,
+          transparent 82%,
+          rgba(10,10,10,0.55) 100%);
       }
-      .hero-mobile-logo { order: 2; display: flex; }
-      .hero-right { order: 3; height: 65vw; min-height: unset; }
-      .hero-title { font-size: clamp(60px, 17vw, 96px); }
-      .hero-stats-row { margin-top: 1.25rem; max-width: 100%; }
+      .hero-title { font-size: clamp(62px, 16.5vw, 92px); margin-bottom: 1rem; }
+      .hero-tagline { font-size: 0.72rem; }
+      .hero-sub { font-size: 0.6rem; margin-bottom: 1.5rem; }
+      .btn-primary { font-size: 0.9rem; padding: 0.75rem 1.75rem; }
+      .hero-stats-row { margin-top: 1.5rem; max-width: 100%; }
+      .hero-stat-num { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+
+      /* 2 — Logo divisor en medio */
+      .hero-mobile-logo {
+        order: 2;
+        display: flex;
+        flex: 0 0 auto;
+        padding: 1rem 1.5rem;
+        background: var(--negro-tribuna);
+        border-top: 1px solid rgba(45,255,110,0.12);
+        border-bottom: 1px solid rgba(45,255,110,0.12);
+      }
+
+      /* 3 — Foto abajo: ocupa el espacio restante */
+      .hero-right {
+        order: 3;
+        flex: 1;
+        min-height: 52vw;
+        min-height: unset;
+        position: relative;
+      }
       .scroll-cue { display: none; }
     }
 
@@ -1174,7 +1207,6 @@
     }
     /* ── HAMBURGER ───────────────────────────────────── */
     .nav-hamburger {
-      display: none;
       flex-direction: column;
       justify-content: space-between;
       width: 26px; height: 18px;
