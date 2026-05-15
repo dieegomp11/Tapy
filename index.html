@@ -443,54 +443,62 @@
     }
 
     @media (max-width: 768px) {
-      /* Hero: flex column — texto | logo | foto */
+      /* Hero: grid 2 filas — texto (auto) | imagen (1fr rellena el resto) */
       .hero {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
         min-height: 100dvh;
         overflow: hidden;
       }
-      .hero-bg { display: none; }
+      .hero-bg        { display: none; }
+      .hero-mobile-logo { display: none; }
 
-      /* 1 — Texto arriba */
+      /* Texto arriba — fondo sólido para legibilidad */
       .hero-left {
         order: 1;
-        flex: 0 0 auto;
-        padding: 5.5rem 1.5rem 1.75rem;
+        grid-row: 1;
+        padding: 5.25rem 1.5rem 1.75rem;
         justify-content: flex-start;
-        background: linear-gradient(to bottom,
-          rgba(10,10,10,0.6) 0%,
-          transparent 18%,
-          transparent 82%,
-          rgba(10,10,10,0.55) 100%);
-      }
-      .hero-title { font-size: clamp(62px, 16.5vw, 92px); margin-bottom: 1rem; }
-      .hero-tagline { font-size: 0.72rem; }
-      .hero-sub { font-size: 0.6rem; margin-bottom: 1.5rem; }
-      .btn-primary { font-size: 0.9rem; padding: 0.75rem 1.75rem; }
-      .hero-stats-row { margin-top: 1.5rem; max-width: 100%; }
-      .hero-stat-num { font-size: clamp(1.4rem, 5vw, 1.8rem); }
-
-      /* 2 — Logo divisor en medio */
-      .hero-mobile-logo {
-        order: 2;
-        display: flex;
-        flex: 0 0 auto;
-        padding: 1rem 1.5rem;
         background: var(--negro-tribuna);
-        border-top: 1px solid rgba(45,255,110,0.12);
-        border-bottom: 1px solid rgba(45,255,110,0.12);
+        position: relative;
+        z-index: 1;
+      }
+      /* Línea separadora verde entre texto e imagen */
+      .hero-left::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg,
+          transparent 0%, rgba(45,255,110,0.4) 30%,
+          rgba(45,255,110,0.4) 70%, transparent 100%);
       }
 
-      /* 3 — Foto abajo: ocupa el espacio restante */
+      /* Imagen abajo — rellena todo lo que queda */
       .hero-right {
-        order: 3;
-        flex: 1;
-        min-height: 52vw;
-        min-height: unset;
+        order: 2;
+        grid-row: 2;
         position: relative;
+        min-height: unset;
       }
-      .scroll-cue { display: none; }
+      /* Gradiente imagen: oscurece el top para fundir con la zona de texto */
+      .hero-img-fade {
+        background: linear-gradient(to bottom,
+          rgba(10,10,10,0.5) 0%, transparent 18%,
+          transparent 65%, rgba(10,10,10,0.25) 100%);
+      }
+      .hero-img-wrap::before { display: none; } /* quita línea lateral en móvil */
+
+      /* Tipografía ajustada */
+      .hero-title      { font-size: clamp(56px, 15vw, 86px); margin-bottom: 0.75rem; }
+      .hero-eyebrow    { margin-bottom: 0.75rem; }
+      .hero-tagline    { font-size: 0.7rem; margin-bottom: 0.3rem; }
+      .hero-sub        { font-size: 0.58rem; margin-bottom: 1.25rem; }
+      .btn-primary     { padding: 0.7rem 1.6rem; font-size: 0.88rem; }
+      .hero-stats-row  { margin-top: 1.25rem; max-width: 100%; }
+      .hero-stat-num   { font-size: clamp(1.3rem, 4.5vw, 1.7rem); }
+      .scroll-cue      { display: none; }
     }
 
     /* ── MARQUEE ─────────────────────────────────────── */
