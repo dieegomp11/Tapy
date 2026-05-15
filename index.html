@@ -373,6 +373,15 @@
     }
     .hero-slide--active { opacity: 1; }
 
+    /* Imagen exclusiva móvil — oculta en escritorio */
+    .hero-slide-mob {
+      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
     /* Stats — izquierda, bajo el CTA */
     .hero-stats-row {
       display: flex;
@@ -462,6 +471,8 @@
         z-index: 0;
       }
       .hero-img-wrap::before { display: none; }
+      .hero-slide     { display: none !important; }
+      .hero-slide-mob { display: block; }
       /* Gradiente: oscuro arriba y abajo, imagen visible en el centro */
       .hero-img-fade {
         background: linear-gradient(180deg,
@@ -1420,6 +1431,7 @@
   <div class="hero-right">
     <div class="hero-img-wrap reveal" data-d="1">
       <img class="hero-slide hero-slide--active" src="herotapy (2).jpg" alt="Alberto M&iacute;nguez, Tapy95Fut, con micr&oacute;fono" style="object-position:center 15%">
+      <img class="hero-slide-mob" src="tapyheromovil.jpg" alt="Alberto M&iacute;nguez, Tapy95Fut" style="object-position:center top">
       <div class="hero-img-fade" aria-hidden="true"></div>
     </div>
   </div>
