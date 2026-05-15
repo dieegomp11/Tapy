@@ -188,10 +188,9 @@
     .nav-cta-wrap { margin-left: auto; }
 
     @media (max-width: 768px) {
-      .nav { grid-template-columns: 1fr auto 1fr; column-gap: 0; padding: 0 1.25rem; }
-      .nav-left { display: none; }
-      .nav-right { gap: 0; justify-content: flex-end; }
-      .nav-right li:not(.nav-cta-wrap) { display: none; }
+      .nav { display: flex; justify-content: center; padding: 0 1.25rem; }
+      .nav-left, .nav-right { display: none; }
+      .nav-hamburger { display: flex; }
     }
 
     /* ── HERO — split: contenido izquierda | imagen 16:9 derecha ── */
@@ -443,16 +442,21 @@
     }
 
     @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; align-content: start; align-items: start; }
-      .hero-right { height: 100vw; min-height: unset; order: -1; }
-      .hero-left  {
-        padding: 1.75rem 1.25rem 4rem;
-        flex-direction: column;
-        justify-content: flex-start;
-        background: linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, transparent 14%, transparent 78%, rgba(10,10,10,0.75) 100%);
+      .hero {
+        grid-template-columns: 1fr;
+        align-content: start; align-items: stretch;
+        min-height: 100dvh;
       }
-      .hero-title { font-size: clamp(64px, 18vw, 100px); }
-      .hero-stats-row { margin-top: 1.5rem; max-width: 100%; }
+      .hero-left {
+        order: 1;
+        padding: 5.5rem 1.25rem 1.5rem;
+        flex-direction: column; justify-content: flex-start;
+        background: linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, transparent 16%, transparent 80%, rgba(10,10,10,0.7) 100%);
+      }
+      .hero-mobile-logo { order: 2; display: flex; }
+      .hero-right { order: 3; height: 65vw; min-height: unset; }
+      .hero-title { font-size: clamp(60px, 17vw, 96px); }
+      .hero-stats-row { margin-top: 1.25rem; max-width: 100%; }
       .scroll-cue { display: none; }
     }
 
@@ -1168,6 +1172,84 @@
       max-width: 30ch;
       line-height: 1.55;
     }
+    /* ── HAMBURGER ───────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 26px; height: 18px;
+      background: none; border: none;
+      cursor: pointer; padding: 0;
+      position: absolute; right: 1.25rem; top: 50%;
+      transform: translateY(-50%);
+      z-index: 200;
+    }
+    .nav-hamburger span {
+      display: block; width: 100%; height: 1.5px;
+      background: var(--blanco-cal); border-radius: 2px;
+      transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease;
+    }
+    .nav-hamburger.is-open span:nth-child(1) { transform: translateY(8.25px) rotate(45deg); }
+    .nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.is-open span:nth-child(3) { transform: translateY(-8.25px) rotate(-45deg); }
+
+    /* ── MOBILE MENU OVERLAY ─────────────────────────── */
+    .mobile-menu {
+      position: fixed; inset: 0;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 150;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mobile-menu.is-open { opacity: 1; pointer-events: all; }
+    .mm-nav {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1.6rem; text-align: center;
+    }
+    .mm-link {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 10vw, 3.2rem);
+      letter-spacing: 0.06em; color: var(--blanco-cal);
+      text-decoration: none; opacity: 0.6; line-height: 1;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .mm-link:hover { opacity: 1; color: var(--verde-brillante); }
+    .mm-cta {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 0.14em;
+      color: var(--verde-brillante);
+      border: 1px solid rgba(45,255,110,0.45);
+      padding: 0.7rem 2.5rem; text-decoration: none;
+      margin-top: 1.25rem;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: inset 0 1px 0 rgba(45,255,110,0.07);
+    }
+    .mm-cta:hover { background: var(--verde-brillante); color: var(--negro-tribuna); }
+
+    /* ── HERO MOBILE LOGO (solo visible en móvil) ─────── */
+    .hero-mobile-logo {
+      display: none;
+      align-items: center; justify-content: center;
+      gap: 0.55rem;
+      padding: 1.1rem 1.25rem;
+      position: relative; z-index: 1;
+      background: linear-gradient(to bottom, transparent, rgba(10,10,10,0.3) 50%, transparent);
+    }
+    .hero-mobile-logo img {
+      height: 44px; width: auto;
+      filter: drop-shadow(0 2px 8px rgba(45,255,110,0.18));
+    }
+    .hero-mobile-logo-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 0.04em;
+      color: var(--blanco-cal); line-height: 1;
+    }
+    .hero-mobile-logo-name em { color: var(--verde-brillante); font-style: normal; }
+
     /* ── MOBILE GLOBAL FIXES (<768px) ───────────────── */
     @media (max-width: 768px) {
 
@@ -1238,7 +1320,21 @@
     <li><a href="#plataformas">Plataformas</a></li>
     <li class="nav-cta-wrap"><a href="#contacto" class="nav-cta">Colabora</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Abrir men&uacute;" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- ═══ MOBILE MENU ══════════════════════════════════════ -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <nav class="mm-nav">
+    <a href="#sobre"       class="mm-link">Qui&eacute;n es</a>
+    <a href="#contenido"   class="mm-link">Contenido</a>
+    <a href="#estadios"    class="mm-link">Estadios</a>
+    <a href="#plataformas" class="mm-link">Plataformas</a>
+    <a href="#contacto"    class="mm-cta">Colabora</a>
+  </nav>
+</div>
 
 <!-- ═══ HERO — split ══════════════════════════════════ -->
 <section class="hero" aria-label="Tapy95Fut, creador de contenido futbolero">
@@ -1270,6 +1366,12 @@
         <span class="hero-stat-lbl">Visualizaciones</span>
       </div>
     </div>
+  </div>
+
+  <!-- Divisor móvil: logo entre texto y foto -->
+  <div class="hero-mobile-logo" aria-hidden="true">
+    <img src="face.png" alt="">
+    <span class="hero-mobile-logo-name">TAPY<em>95</em>FUT</span>
   </div>
 
   <!-- Derecha: imagen 1:1 full height -->
@@ -1633,6 +1735,36 @@
 
   document.querySelectorAll('[data-target]').forEach(function (el) {
     cObs.observe(el);
+  });
+}());
+
+/* ── Hamburger menu ─────────────────────────────────── */
+(function () {
+  var btn  = document.getElementById('hamburger');
+  var menu = document.getElementById('mobile-menu');
+  var links = menu.querySelectorAll('a');
+
+  function open() {
+    btn.classList.add('is-open');
+    menu.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    btn.classList.remove('is-open');
+    menu.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function () {
+    menu.classList.contains('is-open') ? close() : open();
+  });
+  links.forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
   });
 }());
 
