@@ -452,73 +452,69 @@
     }
 
     @media (max-width: 768px) {
-      /* ── Magazine cover ──────────────────────────────────────
-         svh = small viewport height: altura con barra de navegador
-         visible. Nunca cambia aunque el navegador muestre/oculte
-         su chrome. Garantiza que el CTA siempre esté visible.     */
+      /* ── Hero móvil: magazine cover ───────────────────────── */
       .hero {
         display: block;
         position: relative;
-        min-height: 100svh;
+        height: 100svh;
         overflow: hidden;
       }
       .hero-bg          { display: none; }
       .hero-mobile-logo { display: none; }
       .scroll-cue       { display: none; }
 
-      /* Foto: fondo absoluto, cubre todo el hero */
-      .hero-right {
-        position: absolute;
-        inset: 0;
-        height: 100%;
-        z-index: 0;
-      }
+      /* Foto: cubre exactamente el hero */
+      .hero-right { position: absolute; inset: 0; z-index: 0; }
       .hero-img-wrap::before { display: none; }
       .hero-slide     { display: none !important; }
       .hero-slide-mob { display: block; }
       .hero-img-fade {
         background: linear-gradient(180deg,
-          rgba(10,10,10,0.90) 0%,
-          rgba(10,10,10,0.35) 22%,
-          rgba(10,10,10,0.00) 48%,
-          rgba(10,10,10,0.45) 72%,
+          rgba(10,10,10,0.88) 0%,
+          rgba(10,10,10,0.30) 25%,
+          rgba(10,10,10,0.00) 50%,
+          rgba(10,10,10,0.40) 72%,
           rgba(10,10,10,0.95) 100%);
       }
 
-      /* Capa de texto: min-height svh, SIN overflow hidden.
-         space-between: eyebrow arriba, hero-bottom abajo.
-         3.875rem = 62px = altura exacta de la nav fija. */
+      /* Capa de texto: misma altura que el hero, posición relativa
+         para que eyebrow y hero-bottom sean hijos absolutos. */
       .hero-left {
         position: relative;
         z-index: 2;
-        min-height: 100svh;
-        padding: 3.875rem 1.25rem max(1.75rem, env(safe-area-inset-bottom) + 1.25rem);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
+        height: 100svh;
         background: none;
       }
 
-      /* Eyebrow: primer hijo → arriba */
-      .hero-eyebrow { font-size: 0.54rem; margin-bottom: 0; }
+      /* Eyebrow: anclado arriba, justo bajo la nav fija (62 px) */
+      .hero-eyebrow {
+        position: absolute;
+        top: 3.875rem;
+        left: 1.25rem;
+        right: 1.25rem;
+        font-size: 0.54rem;
+        margin-bottom: 0;
+      }
 
-      /* Bloque inferior: título + tagline + stats + CTA */
+      /* Bloque inferior: anclado al fondo con position absolute.
+         Nunca puede salir de pantalla porque está fijado al bottom. */
       .hero-bottom {
+        position: absolute;
+        bottom: max(1.75rem, env(safe-area-inset-bottom) + 1.25rem);
+        left: 1.25rem;
+        right: 1.25rem;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        width: 100%;
       }
 
-      /* svh en font-size = escala con la altura visible real */
       .hero-title {
-        font-size: clamp(40px, 8svh, 58px);
+        font-size: clamp(38px, 8svh, 56px);
         line-height: 0.86;
         margin-bottom: 0.3rem;
       }
       .hero-tagline {
-        font-size: 0.62rem;
+        font-size: 0.6rem;
         letter-spacing: 0.18em;
         margin-bottom: 0.5rem;
       }
@@ -527,20 +523,18 @@
       .hero-stats-row {
         margin-top: 0;
         width: 100%;
-        max-width: 100%;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid rgba(255,255,255,0.09);
       }
-      .hero-stat-num { font-size: clamp(1rem, 4vw, 1.35rem); }
-      .hero-stat-lbl { font-size: 0.45rem; }
+      .hero-stat-num { font-size: clamp(0.95rem, 3.5vw, 1.3rem); }
+      .hero-stat-lbl { font-size: 0.44rem; }
 
-      /* CTA: full-width, último elemento, siempre visible */
       .btn-primary {
         align-self: stretch;
         justify-content: center;
         margin-top: 0.55rem;
-        padding: 0.7rem 1.5rem;
-        font-size: 0.85rem;
+        padding: 0.65rem 1.5rem;
+        font-size: 0.83rem;
       }
     }
 
