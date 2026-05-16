@@ -456,7 +456,7 @@
       .hero {
         display: block;
         position: relative;
-        min-height: 100dvh;
+        height: 100dvh; /* exacto — el contenido no puede desbordar */
         overflow: hidden;
       }
       .hero-bg          { display: none; }
@@ -467,76 +467,83 @@
       .hero-right {
         position: absolute;
         inset: 0;
-        min-height: unset;
+        height: 100%;
         z-index: 0;
       }
       .hero-img-wrap::before { display: none; }
       .hero-slide     { display: none !important; }
       .hero-slide-mob { display: block; }
-      /* Gradiente: oscuro arriba y abajo, imagen visible en el centro */
       .hero-img-fade {
         background: linear-gradient(180deg,
           rgba(10,10,10,0.88) 0%,
-          rgba(10,10,10,0.45) 22%,
+          rgba(10,10,10,0.4) 20%,
           rgba(10,10,10,0.05) 48%,
-          rgba(10,10,10,0.55) 72%,
-          rgba(10,10,10,0.92) 100%);
+          rgba(10,10,10,0.5) 72%,
+          rgba(10,10,10,0.94) 100%);
       }
 
-      /* Texto: capa encima, ocupa el mismo 100dvh */
+      /* Columna de texto: altura exacta, sin overflow */
       .hero-left {
         position: relative;
         z-index: 2;
-        min-height: 100dvh;
-        /* safe-area-inset-bottom cubre la home bar de iOS */
-        padding: 4.75rem 1.25rem max(1.5rem, env(safe-area-inset-bottom) + 1.25rem);
+        height: 100dvh;
+        overflow: hidden;
+        /* padding-top cubre la nav (62px ≈ 4rem) + margen extra
+           padding-bottom se adapta a la home bar de iOS */
+        padding: clamp(4rem, 9dvh, 5.5rem) 1.25rem
+                 max(2.5dvh, env(safe-area-inset-bottom) + 1.5rem);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         background: none;
       }
 
-      /* Eyebrow: anclado arriba */
-      .hero-eyebrow { order: 1; margin-bottom: 0.5rem; font-size: 0.55rem; }
+      /* Eyebrow: arriba del todo */
+      .hero-eyebrow {
+        order: 1;
+        font-size: 0.54rem;
+        margin-bottom: 0.4rem;
+      }
 
-      /* Título: empuja todo el bloque inferior al fondo con margin-top auto */
+      /* Título + tagline: se empujan hacia el fondo con margin-top auto */
       .hero-title {
         order: 3;
         margin-top: auto;
-        font-size: clamp(52px, 14.5vw, 72px);
+        /* dvh hace que el título escale con la altura real de pantalla */
+        font-size: clamp(44px, 10.5dvh, 72px);
         line-height: 0.86;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.3rem;
       }
       .hero-tagline {
         order: 4;
-        font-size: 0.68rem;
+        font-size: 0.66rem;
         letter-spacing: 0.2em;
-        margin-bottom: 0.55rem;
+        margin-bottom: 0.5rem;
       }
 
       /* Sub — oculto en móvil */
       .hero-sub { order: 5; display: none; }
 
-      /* Stats: justo encima del CTA */
+      /* Stats: encima del CTA */
       .hero-stats-row {
         order: 6;
         margin-top: 0;
         width: 100%;
         max-width: 100%;
-        padding-bottom: 0.65rem;
+        padding-bottom: clamp(0.4rem, 1.2dvh, 0.7rem);
         border-bottom: 1px solid rgba(255,255,255,0.09);
       }
-      .hero-stat-num  { font-size: clamp(1.25rem, 4vw, 1.6rem); }
-      .hero-stat-lbl  { font-size: 0.48rem; }
+      .hero-stat-num { font-size: clamp(1.1rem, 3.5dvh, 1.6rem); }
+      .hero-stat-lbl { font-size: 0.47rem; }
 
-      /* CTA: full-width, anclado al fondo */
+      /* CTA: full-width, último elemento */
       .btn-primary {
         order: 7;
         align-self: stretch;
         justify-content: center;
-        margin-top: 0.65rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
+        margin-top: clamp(0.4rem, 1.2dvh, 0.75rem);
+        padding: clamp(0.55rem, 1.5dvh, 0.85rem) 1.5rem;
+        font-size: 0.88rem;
       }
     }
 
