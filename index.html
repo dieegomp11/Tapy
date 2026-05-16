@@ -452,18 +452,21 @@
     }
 
     @media (max-width: 768px) {
-      /* ── Magazine cover ──────────────────────────────────── */
+      /* ── Magazine cover ──────────────────────────────────────
+         svh = small viewport height: altura con barra de navegador
+         visible. Nunca cambia aunque el navegador muestre/oculte
+         su chrome. Garantiza que el CTA siempre esté visible.     */
       .hero {
         display: block;
         position: relative;
-        height: 100dvh;
+        min-height: 100svh;
         overflow: hidden;
       }
       .hero-bg          { display: none; }
       .hero-mobile-logo { display: none; }
       .scroll-cue       { display: none; }
 
-      /* Foto: fondo absoluto */
+      /* Foto: fondo absoluto, cubre todo el hero */
       .hero-right {
         position: absolute;
         inset: 0;
@@ -475,24 +478,21 @@
       .hero-slide-mob { display: block; }
       .hero-img-fade {
         background: linear-gradient(180deg,
-          rgba(10,10,10,0.9)  0%,
+          rgba(10,10,10,0.90) 0%,
           rgba(10,10,10,0.35) 22%,
-          rgba(10,10,10,0.0)  48%,
+          rgba(10,10,10,0.00) 48%,
           rgba(10,10,10,0.45) 72%,
           rgba(10,10,10,0.95) 100%);
       }
 
-      /* Capa de texto: exactamente la altura del viewport.
-         space-between separa eyebrow (arriba) de hero-bottom (abajo).
-         env(safe-area-inset-bottom) protege la home bar de iOS. */
+      /* Capa de texto: min-height svh, SIN overflow hidden.
+         space-between: eyebrow arriba, hero-bottom abajo.
+         3.875rem = 62px = altura exacta de la nav fija. */
       .hero-left {
         position: relative;
         z-index: 2;
-        height: 100dvh;
-        padding-top: clamp(3.75rem, 9dvh, 5rem);
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
-        padding-bottom: max(1.75rem, env(safe-area-inset-bottom) + 1.25rem);
+        min-height: 100svh;
+        padding: 3.875rem 1.25rem max(1.75rem, env(safe-area-inset-bottom) + 1.25rem);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -500,14 +500,10 @@
         background: none;
       }
 
-      /* Eyebrow: primer hijo → anclado arriba por space-between */
-      .hero-eyebrow {
-        font-size: 0.54rem;
-        margin-bottom: 0;
-      }
+      /* Eyebrow: primer hijo → arriba */
+      .hero-eyebrow { font-size: 0.54rem; margin-bottom: 0; }
 
-      /* Bloque inferior: título + tagline + stats + CTA
-         Segundo hijo → anclado abajo por space-between */
+      /* Bloque inferior: título + tagline + stats + CTA */
       .hero-bottom {
         display: flex;
         flex-direction: column;
@@ -515,37 +511,36 @@
         width: 100%;
       }
 
-      /* Título: se adapta a la altura real con dvh */
+      /* svh en font-size = escala con la altura visible real */
       .hero-title {
-        font-size: clamp(44px, 10dvh, 70px);
+        font-size: clamp(40px, 8svh, 58px);
         line-height: 0.86;
-        margin-bottom: clamp(0.25rem, 0.8dvh, 0.45rem);
+        margin-bottom: 0.3rem;
       }
       .hero-tagline {
-        font-size: 0.65rem;
-        letter-spacing: 0.2em;
-        margin-bottom: clamp(0.4rem, 1dvh, 0.6rem);
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        margin-bottom: 0.5rem;
       }
       .hero-sub { display: none; }
 
-      /* Stats */
       .hero-stats-row {
         margin-top: 0;
         width: 100%;
         max-width: 100%;
-        padding-bottom: clamp(0.35rem, 0.9dvh, 0.6rem);
+        padding-bottom: 0.5rem;
         border-bottom: 1px solid rgba(255,255,255,0.09);
       }
-      .hero-stat-num { font-size: clamp(1.1rem, 3dvh, 1.5rem); }
-      .hero-stat-lbl { font-size: 0.47rem; }
+      .hero-stat-num { font-size: clamp(1rem, 4vw, 1.35rem); }
+      .hero-stat-lbl { font-size: 0.45rem; }
 
-      /* CTA: full-width, justo debajo de los stats */
+      /* CTA: full-width, último elemento, siempre visible */
       .btn-primary {
         align-self: stretch;
         justify-content: center;
-        margin-top: clamp(0.35rem, 0.9dvh, 0.65rem);
-        padding: clamp(0.5rem, 1.3dvh, 0.8rem) 1.5rem;
-        font-size: 0.88rem;
+        margin-top: 0.55rem;
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
       }
     }
 
