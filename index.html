@@ -452,18 +452,18 @@
     }
 
     @media (max-width: 768px) {
-      /* ── Magazine cover: foto full-bleed, texto flotando encima ── */
+      /* ── Magazine cover ──────────────────────────────────── */
       .hero {
         display: block;
         position: relative;
-        height: 100dvh; /* exacto — el contenido no puede desbordar */
+        height: 100dvh;
         overflow: hidden;
       }
       .hero-bg          { display: none; }
       .hero-mobile-logo { display: none; }
       .scroll-cue       { display: none; }
 
-      /* Imagen: ocupa TODO el hero como fondo */
+      /* Foto: fondo absoluto */
       .hero-right {
         position: absolute;
         inset: 0;
@@ -475,74 +475,76 @@
       .hero-slide-mob { display: block; }
       .hero-img-fade {
         background: linear-gradient(180deg,
-          rgba(10,10,10,0.88) 0%,
-          rgba(10,10,10,0.4) 20%,
-          rgba(10,10,10,0.05) 48%,
-          rgba(10,10,10,0.5) 72%,
-          rgba(10,10,10,0.94) 100%);
+          rgba(10,10,10,0.9)  0%,
+          rgba(10,10,10,0.35) 22%,
+          rgba(10,10,10,0.0)  48%,
+          rgba(10,10,10,0.45) 72%,
+          rgba(10,10,10,0.95) 100%);
       }
 
-      /* Columna de texto: altura exacta, sin overflow */
+      /* Capa de texto: exactamente la altura del viewport.
+         space-between separa eyebrow (arriba) de hero-bottom (abajo).
+         env(safe-area-inset-bottom) protege la home bar de iOS. */
       .hero-left {
         position: relative;
         z-index: 2;
         height: 100dvh;
-        overflow: hidden;
-        /* padding-top cubre la nav (62px ≈ 4rem) + margen extra
-           padding-bottom se adapta a la home bar de iOS */
-        padding: clamp(4rem, 9dvh, 5.5rem) 1.25rem
-                 max(2.5dvh, env(safe-area-inset-bottom) + 1.5rem);
+        padding-top: clamp(3.75rem, 9dvh, 5rem);
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        padding-bottom: max(1.75rem, env(safe-area-inset-bottom) + 1.25rem);
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         align-items: flex-start;
         background: none;
       }
 
-      /* Eyebrow: arriba del todo */
+      /* Eyebrow: primer hijo → anclado arriba por space-between */
       .hero-eyebrow {
-        order: 1;
         font-size: 0.54rem;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0;
       }
 
-      /* Título + tagline: se empujan hacia el fondo con margin-top auto */
+      /* Bloque inferior: título + tagline + stats + CTA
+         Segundo hijo → anclado abajo por space-between */
+      .hero-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      /* Título: se adapta a la altura real con dvh */
       .hero-title {
-        order: 3;
-        margin-top: auto;
-        /* dvh hace que el título escale con la altura real de pantalla */
-        font-size: clamp(44px, 10.5dvh, 72px);
+        font-size: clamp(44px, 10dvh, 70px);
         line-height: 0.86;
-        margin-bottom: 0.3rem;
+        margin-bottom: clamp(0.25rem, 0.8dvh, 0.45rem);
       }
       .hero-tagline {
-        order: 4;
-        font-size: 0.66rem;
+        font-size: 0.65rem;
         letter-spacing: 0.2em;
-        margin-bottom: 0.5rem;
+        margin-bottom: clamp(0.4rem, 1dvh, 0.6rem);
       }
+      .hero-sub { display: none; }
 
-      /* Sub — oculto en móvil */
-      .hero-sub { order: 5; display: none; }
-
-      /* Stats: encima del CTA */
+      /* Stats */
       .hero-stats-row {
-        order: 6;
         margin-top: 0;
         width: 100%;
         max-width: 100%;
-        padding-bottom: clamp(0.4rem, 1.2dvh, 0.7rem);
+        padding-bottom: clamp(0.35rem, 0.9dvh, 0.6rem);
         border-bottom: 1px solid rgba(255,255,255,0.09);
       }
-      .hero-stat-num { font-size: clamp(1.1rem, 3.5dvh, 1.6rem); }
+      .hero-stat-num { font-size: clamp(1.1rem, 3dvh, 1.5rem); }
       .hero-stat-lbl { font-size: 0.47rem; }
 
-      /* CTA: full-width, último elemento */
+      /* CTA: full-width, justo debajo de los stats */
       .btn-primary {
-        order: 7;
         align-self: stretch;
         justify-content: center;
-        margin-top: clamp(0.4rem, 1.2dvh, 0.75rem);
-        padding: clamp(0.55rem, 1.5dvh, 0.85rem) 1.5rem;
+        margin-top: clamp(0.35rem, 0.9dvh, 0.65rem);
+        padding: clamp(0.5rem, 1.3dvh, 0.8rem) 1.5rem;
         font-size: 0.88rem;
       }
     }
@@ -1429,28 +1431,30 @@
   <!-- Izquierda: texto -->
   <div class="hero-left">
     <p class="hero-eyebrow reveal">Albacete, Espa&ntilde;a &mdash; Creador de Contenido Futbolero</p>
-    <h1 class="hero-title reveal" data-d="1">TAPY<br>95FUT</h1>
-    <p class="hero-tagline reveal" data-d="2" aria-label="Entrevistas, Estadios, Segunda División">
-      Entrevistas <span class="dot" aria-hidden="true">&middot;</span>
-      Estadios <span class="dot" aria-hidden="true">&middot;</span>
-      Segunda Div.
-    </p>
-    <p class="hero-sub reveal" data-d="2">Gestionado por MTS 23Talent &nbsp;&middot;&nbsp; Movistar+ &amp; LALIGA</p>
-    <a href="#contacto" class="btn-primary btn-magnetic reveal" data-d="3" aria-label="Colaborar con Tapy95Fut">
-      <span>Colabora Conmigo</span>
-      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-        <path d="M3 7.5h9M8 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <div class="hero-stats-row reveal" data-d="4">
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">1.3M+</span>
-        <span class="hero-stat-lbl">Seguidores</span>
+    <div class="hero-bottom">
+      <h1 class="hero-title reveal" data-d="1">TAPY<br>95FUT</h1>
+      <p class="hero-tagline reveal" data-d="2" aria-label="Entrevistas, Estadios, Segunda División">
+        Entrevistas <span class="dot" aria-hidden="true">&middot;</span>
+        Estadios <span class="dot" aria-hidden="true">&middot;</span>
+        Segunda Div.
+      </p>
+      <p class="hero-sub reveal" data-d="2">Gestionado por MTS 23Talent &nbsp;&middot;&nbsp; Movistar+ &amp; LALIGA</p>
+      <div class="hero-stats-row reveal" data-d="3">
+        <div class="hero-stat-item">
+          <span class="hero-stat-num">1.3M+</span>
+          <span class="hero-stat-lbl">Seguidores</span>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-num">57M+</span>
+          <span class="hero-stat-lbl">Visualizaciones</span>
+        </div>
       </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-num">57M+</span>
-        <span class="hero-stat-lbl">Visualizaciones</span>
-      </div>
+      <a href="#contacto" class="btn-primary btn-magnetic reveal" data-d="4" aria-label="Colaborar con Tapy95Fut">
+        <span>Colabora Conmigo</span>
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+          <path d="M3 7.5h9M8 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </div>
   </div>
 
